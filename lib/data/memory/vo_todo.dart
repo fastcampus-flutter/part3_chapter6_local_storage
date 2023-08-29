@@ -36,7 +36,7 @@ class Todo {
         modifyTime: e.modifyTime);
   }
 
-  TodoDbModel get dbModel => TodoDbModel(id, createdTime, modifyTime, title, dueDate, status);
+  TodoDbModel toDbModel() => TodoDbModel(id, createdTime, modifyTime, title, dueDate, status);
 
   Map<String, dynamic> toJson() => _$TodoToJson(this);
 }

@@ -12,14 +12,14 @@ class TodoData extends GetxController {
   final RxList<Todo> todoList = <Todo>[].obs;
   //final TodoRepository todoRepository = TodoApi.instance;
   final TodoRepository todoRepository = LocalDB.instance;
-  //final todoRepository = LocalDB.instance;
 
   @override
   void onInit() async {
-    final remoteTodoList = await todoRepository.getTodoList();
-    remoteTodoList.runIfSuccess((data) {
+    final getTodoResult = await todoRepository.getTodoList();
+    getTodoResult.runIfSuccess((data) {
       todoList.addAll(data);
     });
+
     super.onInit();
   }
 
@@ -78,7 +78,6 @@ class TodoData extends GetxController {
   void removeTodo(Todo todo) {
     todoList.remove(todo);
     todoRepository.removeTodo(todo.id);
-    //LocalDB.removeTodo(todo.id);
   }
 }
 

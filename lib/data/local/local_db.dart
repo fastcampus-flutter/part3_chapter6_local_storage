@@ -23,11 +23,9 @@ class LocalDB implements TodoRepository<LocalDBError> {
   @override
   Future<SimpleResult<List<Todo>, LocalDBError>> getTodoList() async {
     try {
-      debugPrint('get response success');
       final documents = await _isar.todoDbModels.filter().idGreaterThan(0).findAll();
       return SimpleResult.success(documents.map((e) => Todo.fromDB(e)).toList());
     } catch (e) {
-      debugPrint('get response fail');
       return SimpleResult.failure(
           LocalDBError(LocalDBErrorType.unknown, '에러가 발생했습니다. catch를 통해 세분화된 에러를 넘겨주세요.'));
     }
@@ -36,7 +34,7 @@ class LocalDB implements TodoRepository<LocalDBError> {
   @override
   Future<SimpleResult<void, LocalDBError>> addTodo(Todo todo) async {
     await _isar.writeTxn(() async {
-      await _isar.todoDbModels.put(todo.dbModel);
+      await _isar.todoDbModels.put(todo.toDbModel());
     });
     return SimpleResult.success();
   }
@@ -44,7 +42,7 @@ class LocalDB implements TodoRepository<LocalDBError> {
   @override
   Future<SimpleResult<void, LocalDBError>> updateTodo(Todo todo) async {
     await _isar.writeTxn(() async {
-      await _isar.todoDbModels.put(todo.dbModel);
+      await _isar.todoDbModels.put(todo.toDbModel());
     });
     return SimpleResult.success();
   }
